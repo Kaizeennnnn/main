@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>💘 Valentine Invitation</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: pink;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #message {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+
+    #yesBtn, #noBtn {
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    #yesBtn {
+      background: red;
+      color: white;
+      z-index: 1;
+    }
+
+    #noBtn {
+      background: white;
+      color: black;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Will you be my Valentine? 💖</h1>
+  <div id="message">Lovelove 😌</div>
+
+  <button id="yesBtn" onclick="yesClicked()">YES 💕</button>
+  <button id="noBtn">NO 😢</button>
+
+  <script>
+    let yesSize = 20;
+    let noSize = 20;
+    let clickCount = 0;
+
+    const messages = [
+      "Are you sure? 😳",
+      "Please 🥺",
+      "Pretty please 💕",
+      "Don’t do this to me 💔",
+      "I’m begging you 😭",
+      "Why are you like this 😢",
+      "Last chance 😱",
+      "Okay fine… YES is your only option 😈❤️"
+    ];
+
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+
+    // Make NO run away from cursor
+    document.addEventListener("mousemove", (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const distance = Math.hypot(
+        e.clientX - (rect.left + rect.width / 2),
+        e.clientY - (rect.top + rect.height / 2)
+      );
+
+      if (distance < 100) {
+        moveNoButton();
+      }
+    });
+
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    // If they somehow click NO
+    noBtn.onclick = () => {
+      if (clickCount < messages.length) {
+        message.textContent = messages[clickCount];
+      }
+      clickCount++;
+
+      // YES grows
+      yesSize += 20;
+      yesBtn.style.fontSize = yesSize + "px";
+
+      // NO shrinks
+      noSize -= 5;
+      if (noSize > 5) {
+        noBtn.style.fontSize = noSize + "px";
+        noBtn.style.padding = noSize + "px";
+      } else {
+        noBtn.style.display = "none";
+      }
+
+      // YES dominates screen
+      if (yesSize > 160) {
+        yesBtn.style.position = "absolute";
+        yesBtn.style.top = "0";
+        yesBtn.style.left = "0";
+        yesBtn.style.width = "100vw";
+        yesBtn.style.height = "100vh";
+        yesBtn.style.fontSize = "80px";
+        yesBtn.style.borderRadius = "0";
+      }
+    };
+
+    function yesClicked() {
+      document.body.innerHTML = `
+        <h1>YAY!! 💘🥰</h1>
+        <p>You’re officially my Valentine ❤️</p>
+      `;
+    }
+
+    // Initial random position
+    moveNoButton();
+  </script>
+
+</body>
+</html>
